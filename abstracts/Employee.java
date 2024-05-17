@@ -2,29 +2,6 @@ public abstract class Employee implements Employable {
     private String name;
     private double salary;
     private int id;
-
-    public Employee(String name, double salary, int id) {
-        this.name = name;
-        this.salary = salary;
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public double getSalary() {
-        return salary;
-    }
-
-    // Metoda work() jest wymagana do implementacji przez klasy dziedziczące z Employee.
-    public abstract void work();
-}
-
-public abstract class Employee implements Employable {
-    private String name;
-    private double salary;
-    private int id;
     private String hireDate;
     private String position;
 
@@ -58,5 +35,17 @@ public abstract class Employee implements Employable {
     @Override
     public int hashCode() {
         return id;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        if (this == obj) {
+            return true;
+        }
+        Employee other = (Employee) obj;
+        return this.id == other.id;
     }
 }

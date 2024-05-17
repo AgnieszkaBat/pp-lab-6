@@ -1,21 +1,5 @@
-public final class Worker extends Employee {
-    public Worker(String name, double salary, int id) {
-        super(name, salary, id, null, null);
-    }
-
-    @Override
-    public void work() {
-        System.out.println("Worker " + getName() + " is working...");
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (!(obj instanceof Employee)) return false;
-        Employee other = (Employee) obj;
-        return this.getId() == other.getId();
-    }
-}
+import java.util.ArrayList;
+import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
@@ -24,33 +8,50 @@ public class Main {
         Worker worker2 = new Worker("Employee2", 2355.01, 102);
         Worker worker3 = new Worker("Employee3", 6457.01, 103);
         Worker worker4 = new Worker("Employee4", 3252.01, 102); // Ten sam ID co worker2
+        Worker worker5 = new Worker("Employee5", 4257.01, 105); // Nowy Worker z innym ID
+        Worker worker6 = new Worker("Employee6", 5257.01, 106); // Nowy Worker z innym ID
 
-        Manager manager = new Manager("manager", 2640.0, 201);
+        // Tworzenie instancji klasy Manager
+        Manager manager1 = new Manager("manager1", 2640.0, 201);
+        Manager manager2 = new Manager("manager2", 3000.0, 202); // Nowy Manager z innym ID
 
-        System.out.println("Salary of worker1: " + worker1.getSalary());
-        worker1.work();
+        // Lista przechowująca wszystkich pracowników
+        List<Employee> employees = new ArrayList<>();
+        employees.add(worker1);
+        employees.add(worker2);
+        employees.add(worker3);
+        employees.add(worker4);
+        employees.add(worker5);
+        employees.add(worker6);
+        employees.add(manager1);
+        employees.add(manager2);
 
-        System.out.println("Salary of worker2: " + worker2.getSalary());
-        worker2.work();
+        // Zliczanie całkowitej sumy pensji wszystkich pracowników
+        double totalSalary = employees.stream().mapToDouble(Employee::getSalary).sum();
+        System.out.println("Total salary of all employees: " + totalSalary);
 
-        System.out.println("Salary of worker3: " + worker3.getSalary());
-        worker3.work();
+        // Zliczanie całkowitej sumy pensji wszystkich managerów
+        double totalManagerSalary = employees.stream()
+                .filter(employee -> employee instanceof Manager)
+                .mapToDouble(Employee::getSalary)
+                .sum();
+        System.out.println("Total salary of all managers: " + totalManagerSalary);
 
-        System.out.println("Salary of worker4: " + worker4.getSalary());
-        worker4.work();
+        // Zliczanie całkowitej sumy pensji wszystkich pracowników (bez managerów)
+        double totalWorkerSalary = employees.stream()
+                .filter(employee -> employee instanceof Worker)
+                .mapToDouble(Employee::getSalary)
+                .sum();
+        System.out.println("Total salary of all workers: " + totalWorkerSalary);
 
-        System.out.println("Salary of manager: " + manager.getSalary());
-        manager.work();
-
-        System.out.println(worker1.getName() + " has code: " + worker1.hashCode());
-        System.out.println(worker2.getName() + " has code: " + worker2.hashCode());
-        System.out.println(worker3.getName() + " has code: " + worker3.hashCode());
-        System.out.println(worker4.getName() + " has code: " + worker4.hashCode());
-        System.out.println(manager.getName() + " has code: " + manager.hashCode());
-
-        System.out.println(worker1.getName() + " equals worker2: " + worker1.equals(worker2));
-        System.out.println(worker1.getName() + " equals worker3: " + worker1.equals(worker3));
-        System.out.println(worker1.getName() + " equals worker4: " + worker1.equals(worker4));
-        System.out.println(worker1.getName() + " equals manager: " + worker1.equals(manager));
+        // Wyszukiwanie wszystkich instancji obiektu, które mają swój odpowiednik w kolekcji
+        for (Employee employee : employees) {
+            long count = employees.stream()
+                    .filter(e -> e.getId() == employee.getId())
+                    .count();
+            if (count > 1) {
+                System.out.println(employee.getName() + " has a duplicate in the collection.");
+            }
+        }
     }
 }

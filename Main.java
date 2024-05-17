@@ -1,58 +1,3 @@
-public interface Employable {
-    void work();
-}
-
-public abstract class Employee implements Employable {
-    private String name;
-    private double salary;
-    private int id;
-    private String hireDate;
-    private String position;
-
-    public Employee(String name, double salary, int id, String hireDate, String position) {
-        this.name = name;
-        this.salary = salary;
-        this.id = id;
-        this.hireDate = hireDate;
-        this.position = position;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public double getSalary() {
-        return salary;
-    }
-
-    public String getHireDate() {
-        return hireDate;
-    }
-
-    public String getPosition() {
-        return position;
-    }
-
-    @Override
-    public abstract void work();
-
-    @Override
-    public int hashCode() {
-        return id;
-    }
-}
-
-public class Manager extends Employee {
-    public Manager(String name, double salary, int id) {
-        super(name, salary, id, null, null);
-    }
-
-    @Override
-    public void work() {
-        System.out.println("Manager " + getName() + " is managing...");
-    }
-}
-
 public final class Worker extends Employee {
     public Worker(String name, double salary, int id) {
         super(name, salary, id, null, null);
@@ -62,6 +7,14 @@ public final class Worker extends Employee {
     public void work() {
         System.out.println("Worker " + getName() + " is working...");
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (!(obj instanceof Employee)) return false;
+        Employee other = (Employee) obj;
+        return this.getId() == other.getId();
+    }
 }
 
 public class Main {
@@ -70,7 +23,7 @@ public class Main {
         Worker worker1 = new Worker("Employee1", 1347.01, 101);
         Worker worker2 = new Worker("Employee2", 2355.01, 102);
         Worker worker3 = new Worker("Employee3", 6457.01, 103);
-        Worker worker4 = new Worker("Employee4", 3252.01, 104);
+        Worker worker4 = new Worker("Employee4", 3252.01, 102); // Ten sam ID co worker2
 
         Manager manager = new Manager("manager", 2640.0, 201);
 
@@ -88,5 +41,16 @@ public class Main {
 
         System.out.println("Salary of manager: " + manager.getSalary());
         manager.work();
+
+        System.out.println(worker1.getName() + " has code: " + worker1.hashCode());
+        System.out.println(worker2.getName() + " has code: " + worker2.hashCode());
+        System.out.println(worker3.getName() + " has code: " + worker3.hashCode());
+        System.out.println(worker4.getName() + " has code: " + worker4.hashCode());
+        System.out.println(manager.getName() + " has code: " + manager.hashCode());
+
+        System.out.println(worker1.getName() + " equals worker2: " + worker1.equals(worker2));
+        System.out.println(worker1.getName() + " equals worker3: " + worker1.equals(worker3));
+        System.out.println(worker1.getName() + " equals worker4: " + worker1.equals(worker4));
+        System.out.println(worker1.getName() + " equals manager: " + worker1.equals(manager));
     }
 }

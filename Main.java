@@ -1,5 +1,5 @@
 public interface Employable {
-    void work();
+    void performWork(); // More descriptive method name
 }
 
 public abstract class Employee implements Employable {
@@ -34,7 +34,7 @@ public abstract class Employee implements Employable {
     }
 
     @Override
-    public abstract void work();
+    public abstract void performWork(); // Consistent implementation requirement
 
     @Override
     public int hashCode() {
@@ -44,49 +44,50 @@ public abstract class Employee implements Employable {
 
 public class Manager extends Employee {
     public Manager(String name, double salary, int id) {
-        super(name, salary, id, null, null);
+        super(name, salary, id, null, "Manager"); // Provide default "Manager" position
     }
 
     @Override
-    public void work() {
+    public void performWork() {
         System.out.println("Manager " + getName() + " is managing...");
     }
 }
 
 public final class Worker extends Employee {
     public Worker(String name, double salary, int id) {
-        super(name, salary, id, null, null);
+        super(name, salary, id, null, "Worker"); // Provide default "Worker" position
     }
 
     @Override
-    public void work() {
+    public void performWork() {
         System.out.println("Worker " + getName() + " is working...");
     }
 }
 
 public class Main {
     public static void main(String[] args) {
-        // Tworzenie instancji klasy Worker
+        // Worker instances
         Worker worker1 = new Worker("Employee1", 1347.01, 101);
         Worker worker2 = new Worker("Employee2", 2355.01, 102);
         Worker worker3 = new Worker("Employee3", 6457.01, 103);
         Worker worker4 = new Worker("Employee4", 3252.01, 104);
 
-        Manager manager = new Manager("manager", 2640.0, 201);
+        // Manager instance
+        Manager manager = new Manager("Manager", 2640.0, 201);
 
         System.out.println("Salary of worker1: " + worker1.getSalary());
-        worker1.work();
+        worker1.performWork(); // Use the corrected method name
 
         System.out.println("Salary of worker2: " + worker2.getSalary());
-        worker2.work();
+        worker2.performWork();
 
         System.out.println("Salary of worker3: " + worker3.getSalary());
-        worker3.work();
+        worker3.performWork();
 
         System.out.println("Salary of worker4: " + worker4.getSalary());
-        worker4.work();
+        worker4.performWork();
 
         System.out.println("Salary of manager: " + manager.getSalary());
-        manager.work();
+        manager.performWork();
     }
 }
